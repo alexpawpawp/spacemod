@@ -1,0 +1,19 @@
+name: Build mod
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - run: unzip -q ./*.zip
+      - run: cd spacemod && chmod +x gradlew && ./gradlew build --no-daemon
+      - uses: actions/upload-artifact@v4
+        with:
+          name: spacemod-jar
+          path: spacemod/build/libs/*.jar
